@@ -83,15 +83,11 @@ class BeritaAdapter(var data: ArrayList<ArticlesItem?>?, var c: Context) : Recyc
                 return filterResults
             }
 
+            @Suppress("UNCHECKED_CAST")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+//                listBerita = results?
                 notifyDataSetChanged()
             }
-
-//            @Suppress("UNCHECKED_CAST")
-//            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-////                listBerita = results?
-//                notifyDataSetChanged()
-//            }
 
         }
     }

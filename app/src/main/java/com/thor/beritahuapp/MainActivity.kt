@@ -19,26 +19,15 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
-//    lateinit var adapter: BeritaAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        var data : ArrayList<ArticlesItem>
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
         if (isConnect()) {
-            var par = "tesla"
-            var str = when (par) {
-                "tesla" -> "everything?q=tesla&from=2021-02-07&sortBy=publishedAt&apiKey=1cd906d561f34bcda0ba8088d9765da5"
-                "apple" -> "everything?q=apple&from=2021-03-06&to=2021-03-06&sortBy=popularity"
-                "Us" -> "top-headlines?country=us&category=business"
-                "tech" -> "top-headlines?sources=techcrunch"
-                else -> ""
-            }
-            getData(str)
+            getData()
 
 
         } else {
@@ -53,14 +42,13 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun getData(str: String) {
-        Toast.makeText(this, str, Toast.LENGTH_SHORT).show()
-//        val response : Response<BeritaResponse> = service
+    private fun getData() {
 
-        NetworkModule.service().getData().enqueue(object : Callback<BeritaResponse> {
+
+        NetworkModule.service().getKategoriTesla().enqueue(object : Callback<BeritaResponse> {
             override fun onResponse(
-                    call: Call<BeritaResponse>,
-                    response: Response<BeritaResponse>
+                call: Call<BeritaResponse>,
+                response: Response<BeritaResponse>
             ) {
                 Log.d("response succes", response.message())
                 if (response.isSuccessful) {
@@ -69,19 +57,6 @@ class MainActivity : AppCompatActivity() {
                     Log.d("opo", data?.size?.toString()!!)
                     if (data?.size ?: 0 > 0) {
                         binding.listKategori1.adapter = BeritaAdapter(data, this@MainActivity)
-
-
-                        binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
-                            override fun onQueryTextSubmit(query: String?): Boolean {
-                                return false
-                            }
-
-                            override fun onQueryTextChange(newText: String?): Boolean {
-                                BeritaAdapter(data, this@MainActivity).filter.filter(newText)
-                                return false
-                            }
-
-                        })
                     }
                 }
             }
@@ -91,87 +66,66 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-//        NetworkModule.service().getData().enqueue(object : Callback<BeritaResponse> {
-//            override fun onResponse(
-//                call: Call<BeritaResponse>,
-//                response: Response<BeritaResponse>
-//            ) {
-//                Log.d("response succes", response.message())
-//                if (response.isSuccessful) {
-//                    binding.progressBar.visibility = View.GONE
-//                    val data = response.body()?.articles
-//                    Log.d("opo", data?.size?.toString()!!)
-//                    if (data?.size ?: 0 > 0) {
-//                        binding.listKategori1.adapter = BeritaAdapter(data, this@MainActivity)
-//                    }
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<BeritaResponse>, t: Throwable) {
-//                binding.progressBar.visibility = View.GONE
-//            }
-//        })
-//
-//        NetworkModule.service().getKategoriApple().enqueue(object : Callback<BeritaResponse> {
-//            override fun onResponse(
-//                call: Call<BeritaResponse>,
-//                response: Response<BeritaResponse>
-//            ) {
-//                Log.d("response succes", response.message())
-//                if (response.isSuccessful) {
-//                    binding.progressBar.visibility = View.GONE
-//                    val data = response.body()?.articles
-//                    Log.d("opo", data?.size?.toString()!!)
-//                    if (data?.size ?: 0 > 0) {
-//                        binding.listKategori2.adapter = BeritaAdapter(data, this@MainActivity)
-//                    }
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<BeritaResponse>, t: Throwable) {
-//                binding.progressBar.visibility = View.GONE
-//            }
-//        })
-//        NetworkModule.service().getKategoriUs().enqueue(object : Callback<BeritaResponse> {
-//            override fun onResponse(
-//                call: Call<BeritaResponse>,
-//                response: Response<BeritaResponse>
-//            ) {
-//                Log.d("response succes", response.message())
-//                if (response.isSuccessful) {
-//                    binding.progressBar.visibility = View.GONE
-//                    val data = response.body()?.articles
-//                    Log.d("opo", data?.size?.toString()!!)
-//                    if (data?.size ?: 0 > 0) {
-//                        binding.listKategori3.adapter = BeritaAdapter(data, this@MainActivity)
-//                    }
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<BeritaResponse>, t: Throwable) {
-//                binding.progressBar.visibility = View.GONE
-//            }
-//        })
-//        NetworkModule.service().getKategoriTechCrunch().enqueue(object : Callback<BeritaResponse> {
-//            override fun onResponse(
-//                call: Call<BeritaResponse>,
-//                response: Response<BeritaResponse>
-//            ) {
-//                Log.d("response succes", response.message())
-//                if (response.isSuccessful) {
-//                    binding.progressBar.visibility = View.GONE
-//                    val data = response.body()?.articles
-//                    Log.d("opo", data?.size?.toString()!!)
-//                    if (data?.size ?: 0 > 0) {
-//                        binding.listKategori4.adapter = BeritaAdapter(data, this@MainActivity)
-//                    }
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<BeritaResponse>, t: Throwable) {
-//                binding.progressBar.visibility = View.GONE
-//            }
-//        })
+        NetworkModule.service().getKategoriApple().enqueue(object : Callback<BeritaResponse> {
+            override fun onResponse(
+                call: Call<BeritaResponse>,
+                response: Response<BeritaResponse>
+            ) {
+                Log.d("response succes", response.message())
+                if (response.isSuccessful) {
+                    binding.progressBar.visibility = View.GONE
+                    val data = response.body()?.articles
+                    Log.d("opo", data?.size?.toString()!!)
+                    if (data?.size ?: 0 > 0) {
+                        binding.listKategori2.adapter = BeritaAdapter(data, this@MainActivity)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<BeritaResponse>, t: Throwable) {
+                binding.progressBar.visibility = View.GONE
+            }
+        })
+        NetworkModule.service().getKategoriUs().enqueue(object : Callback<BeritaResponse> {
+            override fun onResponse(
+                call: Call<BeritaResponse>,
+                response: Response<BeritaResponse>
+            ) {
+                Log.d("response succes", response.message())
+                if (response.isSuccessful) {
+                    binding.progressBar.visibility = View.GONE
+                    val data = response.body()?.articles
+                    Log.d("opo", data?.size?.toString()!!)
+                    if (data?.size ?: 0 > 0) {
+                        binding.listKategori3.adapter = BeritaAdapter(data, this@MainActivity)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<BeritaResponse>, t: Throwable) {
+                binding.progressBar.visibility = View.GONE
+            }
+        })
+        NetworkModule.service().getKategoriTechCrunch().enqueue(object : Callback<BeritaResponse> {
+            override fun onResponse(
+                call: Call<BeritaResponse>,
+                response: Response<BeritaResponse>
+            ) {
+                Log.d("response succes", response.message())
+                if (response.isSuccessful) {
+                    binding.progressBar.visibility = View.GONE
+                    val data = response.body()?.articles
+                    Log.d("opo", data?.size?.toString()!!)
+                    if (data?.size ?: 0 > 0) {
+                        binding.listKategori4.adapter = BeritaAdapter(data, this@MainActivity)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<BeritaResponse>, t: Throwable) {
+                binding.progressBar.visibility = View.GONE
+            }
+        })
     }
 
     fun isConnect(): Boolean {
